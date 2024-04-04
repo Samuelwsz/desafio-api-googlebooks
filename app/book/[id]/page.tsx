@@ -16,8 +16,7 @@ export default async function BookId({ params }: BookPageProps) {
   const book: BookProps = await res.json()
 
   return (
-    <div>
-      <h1>{book.volumeInfo.title}</h1>
+    <div className="flex gap-3">
       {book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail && (
         <Image
           alt="Thumb book"
@@ -26,6 +25,9 @@ export default async function BookId({ params }: BookPageProps) {
           height={200}
         />
       )}
+      <div>
+        <h1>{book.volumeInfo.title}</h1>
+      </div>
     </div>
   )
 }
