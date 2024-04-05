@@ -1,49 +1,13 @@
 "use client"
 
-import { BookProps } from "@/app/interface"
-import axios from "axios"
-import { ChangeEvent, FormEvent, useState } from "react"
-
 import Loading from "@/app/loading"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/card"
-
-export const key = process.env.API_KEY
+import { FetchBooks } from "@/lib/searchBook"
 
 export default function SearchBook() {
-  const [query, setQuery] = useState("")
-  const [books, setBooks] = useState<BookProps[]>([])
-  const [loading, setLoading] = useState(false)
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value)
-  }
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    searchBooks()
-    setQuery("")
-  }
-
-  const searchBooks = async () => {
-    try {
-      setLoading(true)
-
-      const response = await axios.get(
-        `https://www.googleapis.com/books/v1/volumes?q=${query}&startIndex=1&maxResults=40&${key}`
-      )
-
-      const data = await response.data
-      setBooks(data.items)
-    } catch (error) {
-      console.error("Erro ao buscar livros:", error)
-
-      setLoading(false)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const { books, handleChange, handleSubmit, loading, query } = FetchBooks()
 
   return (
     <main>
