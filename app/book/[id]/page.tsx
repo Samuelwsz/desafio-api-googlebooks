@@ -16,21 +16,21 @@ export default async function BookId({ params }: BookPageProps) {
   const book: BookProps = await res.json()
 
   return (
-    <div className="w-full md:flex gap-3 block p-1">
+    <div className="w-full md:flex gap-3 block p-1 dark:text-zinc-300/90">
       <div>
         {book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail && (
           <Image
             alt="Thumb book"
             src={book.volumeInfo.imageLinks.thumbnail}
-            width={200}
-            height={200}
+            width={300}
+            height={300}
             quality={100}
           />
         )}
       </div>
       <div>
-        <div className="flex justify-between items-center">
-          <h1 className="text-lg">{book.volumeInfo.title}</h1>
+        <div className="flex flex-col">
+          <h1 className="text-2xl font-medium dark:text-white text-black">{book.volumeInfo.title}</h1>
           <>
             {book.volumeInfo.publisher ? (
               <h1>Editora: {book.volumeInfo.publisher}</h1>

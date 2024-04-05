@@ -5,8 +5,12 @@ import Link from "next/link"
 export function Card({ book }: { book: BookProps }) {
   return (
     <>
-      <Link href={`/book/${book.id}`} target="_blank">
-        <div className="bg-zinc-200 dark:bg-zinc-700 m-3 flex py-2 border border-zinc-600">
+      <div>
+        <Link
+          href={`/book/${book.id}`}
+          target="_blank"
+          className="bg-zinc-200 dark:bg-zinc-700 m-3 flex py-2 border border-zinc-600"
+        >
           {book.volumeInfo.imageLinks &&
             book.volumeInfo.imageLinks.thumbnail && (
               <div className="flex justify-center items-center">
@@ -38,8 +42,8 @@ export function Card({ book }: { book: BookProps }) {
               ) : null}
             </p>
           </div>
-        </div>
-      </Link>
+        </Link>
+      </div>
     </>
   )
 }
