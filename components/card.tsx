@@ -4,8 +4,8 @@ import Link from "next/link"
 
 export function Card({ book }: { book: BookProps }) {
   return (
-    <div key={book.id} className="">
-      <Link href={`/book/${book.id}`}>
+    <>
+      <Link href={`/book/${book.id}`} target="_blank">
         <div className="bg-zinc-200 dark:bg-zinc-700 m-3 flex py-2 border border-zinc-600">
           {book.volumeInfo.imageLinks &&
             book.volumeInfo.imageLinks.thumbnail && (
@@ -23,13 +23,13 @@ export function Card({ book }: { book: BookProps }) {
 
           <div className="max-w-56 mx-auto">
             <h2 className="text-left mb-2">{book.volumeInfo.title}</h2>
-            <h2>
+            <>
               {book.volumeInfo.publishedDate ? (
                 <>
                   <h2>Publicação: {book.volumeInfo.publishedDate}</h2>
                 </>
               ) : null}
-            </h2>
+            </>
             <p>
               {book.saleInfo.retailPrice?.amount ? (
                 <>
@@ -40,6 +40,6 @@ export function Card({ book }: { book: BookProps }) {
           </div>
         </div>
       </Link>
-    </div>
+    </>
   )
 }

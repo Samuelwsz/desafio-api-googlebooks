@@ -13,7 +13,10 @@ export function NavBar() {
             </Link>
             <ModeToggle />
           </div>
-          <Link href={"/book"}>Books</Link>
+          <div className="flex gap-10">
+            <Link href={"/category"}>Categorias</Link>
+            <Link href={"/search"}>Procurar livros</Link>
+          </div>
         </div>
       </nav>
     </header>
