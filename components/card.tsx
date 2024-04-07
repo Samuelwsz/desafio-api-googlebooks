@@ -8,7 +8,6 @@ export function Card({ book }: { book: BookProps }) {
       <div>
         <Link
           href={`/book/${book.id}`}
-          target="_blank"
           className="bg-zinc-200 dark:bg-zinc-700 m-3 flex py-2 border border-zinc-600"
         >
           {book.volumeInfo.imageLinks &&

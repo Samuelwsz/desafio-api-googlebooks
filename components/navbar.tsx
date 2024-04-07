@@ -16,6 +16,7 @@ export function NavBar() {
           <div className="flex gap-10">
             <Link href={"/category"}>Categorias</Link>
             <Link href={"/search"}>Procurar livros</Link>
+            <Link href={"/favorites"}>Favoritos</Link>
           </div>
         </div>
       </nav>

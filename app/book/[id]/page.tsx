@@ -1,5 +1,10 @@
+"use client"
+import { useEffect } from "react"
 import { BookProps } from "@/app/interface"
 import Image from "next/image"
+import axios from "axios"
+import { Button } from "@/components/ui/button"
+import { FetchFavoritesBooks } from "@/lib/favoriteBooks"
 
 interface BookPageProps {
   params: {
@@ -7,13 +12,34 @@ interface BookPageProps {
   }
 }
 
-export default async function BookId({ params }: BookPageProps) {
-  const bookId = params.id
+export default function BookId({ params }: BookPageProps) {
+  const { book, setBook, handleAddToFavorites, favoritos } =
+    FetchFavoritesBooks()
 
-  const res = await fetch(
-    `https://www.googleapis.com/books/v1/volumes/${bookId}`
-  )
-  const book: BookProps = await res.json()
+  // const bookId = params.id
+
+  // const [book, setBook] = useState<BookProps | null>(null)
+  // const [favoritos, setFavoritos] = useState<BookProps[]>([])
+
+  useEffect(() => {
+    const fetchBook = async () => {
+      try {
+        const res = await axios.get(
+          `https://www.googleapis.com/books/v1/volumes/${params.id}`
+        )
+        const data: BookProps = await res.data
+        setBook(data)
+      } catch (error) {
+        console.error("Error fetching book:", error)
+      }
+    }
+
+    fetchBook()
+  }, [params.id, setBook])
+
+  if (!book) {
+    return <div>Loading...</div> // Render a loading state while fetching the book
+  }
 
   return (
     <div className="w-full md:flex gap-3 block p-1 dark:text-zinc-300/90">
@@ -30,83 +56,66 @@ export default async function BookId({ params }: BookPageProps) {
       </div>
       <div>
         <div className="flex flex-col">
-          <h1 className="text-2xl font-medium dark:text-white text-black">{book.volumeInfo.title}</h1>
-          <>
-            {book.volumeInfo.publisher ? (
-              <h1>Editora: {book.volumeInfo.publisher}</h1>
-            ) : null}
-          </>
+          <h1 className="text-2xl font-medium dark:text-white text-black">
+            {book.volumeInfo.title}
+          </h1>
+          {book.volumeInfo.publisher && (
+            <h1>Editora: {book.volumeInfo.publisher}</h1>
+          )}
         </div>
         <div className="flex justify-between my-2">
-          <>
-            {book.volumeInfo.authors ? (
-              <h1>Autores(a): {book.volumeInfo.authors}</h1>
-            ) : null}
-          </>
-          <>
-            {book.volumeInfo.categories ? (
-              <h1>Categoria(s): {book.volumeInfo.categories}</h1>
-            ) : null}
-          </>
+          {book.volumeInfo.authors && (
+            <h1>Autores(a): {book.volumeInfo.authors}</h1>
+          )}
+          {book.volumeInfo.categories && (
+            <h1>Categoria(s): {book.volumeInfo.categories}</h1>
+          )}
         </div>
-        <>
-          {book.volumeInfo.description ? (
-            <h1 className="max-w-7xl m-auto text-justify">
-              Descrição: {book.volumeInfo.description}
-            </h1>
-          ) : null}
-        </>
+        {book.volumeInfo.description && (
+          <h1 className="max-w-7xl m-auto text-justify">
+            Descrição: {book.volumeInfo.description}
+          </h1>
+        )}
         <div className="flex justify-between my-2">
-          <>
-            {book.volumeInfo.publishedDate ? (
-              <h1>Data de publicação: {book.volumeInfo.publishedDate}</h1>
-            ) : null}
-          </>
-          <>
-            {book.volumeInfo.pageCount ? (
-              <h1>Número de páginas: {book.volumeInfo.pageCount}</h1>
-            ) : null}
-          </>
+          {book.volumeInfo.publishedDate && (
+            <h1>Data de publicação: {book.volumeInfo.publishedDate}</h1>
+          )}
+          {book.volumeInfo.pageCount && (
+            <h1>Número de páginas: {book.volumeInfo.pageCount}</h1>
+          )}
         </div>
         <div className="flex justify-between items-center">
           <div className="flex gap-3">
-            <>
-              {book.saleInfo.saleability ? <h1>A venda: Sim</h1> : <h1>Não</h1>}
-            </>
-            <>
-              {book.saleInfo.isEbook ? (
-                <h1>Versão de Ebook?: Sim</h1>
-              ) : (
-                <h1>Versão de Ebook? Não</h1>
-              )}
-            </>
-            <>
-              {book.saleInfo.retailPrice?.amount ? (
-                <h1>Preço: R${book.saleInfo.retailPrice?.amount}</h1>
-              ) : null}
-            </>
+            <h1>A venda: {book.saleInfo.saleability ? "Sim" : "Não"}</h1>
+            <h1>Versão de Ebook?: {book.saleInfo.isEbook ? "Sim" : "Não"}</h1>
+            {book.saleInfo.retailPrice?.amount && (
+              <h1>Preço: R${book.saleInfo.retailPrice.amount}</h1>
+            )}
           </div>
           <div className="flex gap-3 font-medium text-lg">
-            <>
-              {book.volumeInfo.previewLink ? (
-                <h1>
-                  <a href={book.volumeInfo.previewLink} target="_blank">
-                    Link de visualização
-                  </a>
-                </h1>
-              ) : null}
-            </>
-            <>
-              {book.volumeInfo.infoLink ? (
-                <h1>
-                  <a href={book.volumeInfo.infoLink} target="_blank">
-                    Link para adquirir
-                  </a>
-                </h1>
-              ) : null}
-            </>
+            {book.volumeInfo.previewLink && (
+              <h1>
+                <a href={book.volumeInfo.previewLink} target="_blank">
+                  Link de visualização
+                </a>
+              </h1>
+            )}
+            {book.volumeInfo.infoLink && (
+              <h1>
+                <a href={book.volumeInfo.infoLink} target="_blank">
+                  Link para adquirir
+                </a>
+              </h1>
+            )}
           </div>
         </div>
+        <Button onClick={handleAddToFavorites}>
+          {favoritos &&
+          favoritos.length > 0 &&
+          favoritos.findIndex((item) => item.id === book?.id) !== -1
+            ? "Remove from favorites"
+            : "Add to favorites"}
+        </Button>
       </div>
     </div>
   )
