@@ -63,7 +63,7 @@ export default function BookId({ params }: BookPageProps) {
             <h1>Editora: {book.volumeInfo.publisher}</h1>
           )}
         </div>
-        <div className="flex justify-between my-2">
+        <div className="block sm:flex justify-between my-2">
           {book.volumeInfo.authors && (
             <h1>Autores(a): {book.volumeInfo.authors}</h1>
           )}
@@ -78,43 +78,75 @@ export default function BookId({ params }: BookPageProps) {
         )}
         <div className="flex justify-between my-2">
           {book.volumeInfo.publishedDate && (
-            <h1>Data de publicação: {book.volumeInfo.publishedDate}</h1>
+            <h1>
+              <span className="font-medium text-zinc-200">
+                Data de publicação:
+              </span>{" "}
+              {book.volumeInfo.publishedDate}
+            </h1>
           )}
           {book.volumeInfo.pageCount && (
-            <h1>Número de páginas: {book.volumeInfo.pageCount}</h1>
+            <h1>
+              <span className="font-medium text-zinc-200">
+                Número de páginas:
+              </span>{" "}
+              {book.volumeInfo.pageCount}
+            </h1>
           )}
         </div>
-        <div className="flex justify-between items-center">
+        <div className="block md:flex justify-between items-center">
           <div className="flex gap-3">
-            <h1>A venda: {book.saleInfo.saleability ? "Sim" : "Não"}</h1>
-            <h1>Versão de Ebook?: {book.saleInfo.isEbook ? "Sim" : "Não"}</h1>
+            <h1>
+              <span className="font-medium text-zinc-200">A venda:</span>{" "}
+              {book.saleInfo.saleability ? "Sim" : "Não"}
+            </h1>
+            <h1>
+              <span className="font-medium text-zinc-200">
+                Versão de Ebook?:
+              </span>{" "}
+              {book.saleInfo.isEbook ? "Sim" : "Não"}
+            </h1>
             {book.saleInfo.retailPrice?.amount && (
-              <h1>Preço: R${book.saleInfo.retailPrice.amount}</h1>
+              <h1>
+                <span className="font-medium">Preço: R$</span>
+                {book.saleInfo.retailPrice.amount}
+              </h1>
             )}
           </div>
-          <div className="flex gap-3 font-medium text-lg">
+          <div className="justify-between flex gap-3 font-medium text-lg">
             {book.volumeInfo.previewLink && (
-              <h1>
-                <a href={book.volumeInfo.previewLink} target="_blank">
+              <Button>
+                <a
+                  href={book.volumeInfo.previewLink}
+                  target="_blank"
+                  className="text-white"
+                >
                   Link de visualização
                 </a>
-              </h1>
+              </Button>
             )}
             {book.volumeInfo.infoLink && (
-              <h1>
-                <a href={book.volumeInfo.infoLink} target="_blank">
+              <Button>
+                <a
+                  href={book.volumeInfo.infoLink}
+                  target="_blank"
+                  className="text-white"
+                >
                   Link para adquirir
                 </a>
-              </h1>
+              </Button>
             )}
           </div>
         </div>
-        <Button onClick={handleAddToFavorites}>
+        <Button
+          onClick={handleAddToFavorites}
+          className="mt-3 font-medium text-white"
+        >
           {favoritos &&
           favoritos.length > 0 &&
           favoritos.findIndex((item) => item.id === book?.id) !== -1
-            ? "Remove from favorites"
-            : "Add to favorites"}
+            ? "Remover dos favoritos"
+            : "Adicionar aos favoritos"}
         </Button>
       </div>
     </div>
