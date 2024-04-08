@@ -58,7 +58,7 @@ export default function BookSearch() {
               </div>
               <Button
                 type="submit"
-                className="ml-2 px-4 py-2 rounded-md hover:bg-zinc-700 dark:hover:bg-zinc-300"
+                className="ml-2 px-4 py-2 rounded-md hover:bg-zinc-700 dark:hover:bg-blue-600 text-white font-medium"
               >
                 Pesquisar
               </Button>

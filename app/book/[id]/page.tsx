@@ -1,10 +1,12 @@
 "use client"
+
 import { useEffect } from "react"
 import { BookProps } from "@/app/interface"
 import Image from "next/image"
 import axios from "axios"
 import { Button } from "@/components/ui/button"
 import { FetchFavoritesBooks } from "@/lib/favoriteBooks"
+import Loading from "@/app/loading"
 
 interface BookPageProps {
   params: {
@@ -15,11 +17,6 @@ interface BookPageProps {
 export default function BookId({ params }: BookPageProps) {
   const { book, setBook, handleAddToFavorites, favoritos } =
     FetchFavoritesBooks()
-
-  // const bookId = params.id
-
-  // const [book, setBook] = useState<BookProps | null>(null)
-  // const [favoritos, setFavoritos] = useState<BookProps[]>([])
 
   useEffect(() => {
     const fetchBook = async () => {
@@ -38,7 +35,7 @@ export default function BookId({ params }: BookPageProps) {
   }, [params.id, setBook])
 
   if (!book) {
-    return <div>Loading...</div> // Render a loading state while fetching the book
+    return <Loading />
   }
 
   return (
@@ -60,20 +57,30 @@ export default function BookId({ params }: BookPageProps) {
             {book.volumeInfo.title}
           </h1>
           {book.volumeInfo.publisher && (
-            <h1>Editora: {book.volumeInfo.publisher}</h1>
+            <h1>
+              <span className="font-medium text-zinc-200">Editora: </span>
+              {book.volumeInfo.publisher}
+            </h1>
           )}
         </div>
         <div className="block sm:flex justify-between my-2">
           {book.volumeInfo.authors && (
-            <h1>Autores(a): {book.volumeInfo.authors}</h1>
+            <h1>
+              <span className="font-medium text-zinc-200">Autores(a):</span>{" "}
+              {book.volumeInfo.authors}
+            </h1>
           )}
           {book.volumeInfo.categories && (
-            <h1>Categoria(s): {book.volumeInfo.categories}</h1>
+            <h1>
+              <span className="font-medium text-zinc-200">Categoria(s): </span>
+              {book.volumeInfo.categories}
+            </h1>
           )}
         </div>
         {book.volumeInfo.description && (
           <h1 className="max-w-7xl m-auto text-justify">
-            Descrição: {book.volumeInfo.description}
+            <span className="font-medium text-zinc-200">Descrição:</span>{" "}
+            {book.volumeInfo.description}
           </h1>
         )}
         <div className="flex justify-between my-2">
